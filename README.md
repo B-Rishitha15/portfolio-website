@@ -2,7 +2,7 @@
 
 My personal portfolio website, built with **Java, Spring Boot and Thymeleaf**. It showcases my skills, projects, education, certificates and resume, and has a working contact form that emails messages to me.
 
-**Live demo:** coming soon
+**Live demo:** https://portfolio-website-53ae.onrender.com
 
 ## Features
 
