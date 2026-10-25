@@ -42,6 +42,14 @@ public class DataInitializer implements CommandLineRunner {
                                 + "effect and a skills filter.")
                         .technologies("Java, Spring Boot, Spring Data JPA, Thymeleaf, Tailwind CSS, MySQL, JavaMailSender")
                         .githubLink("https://github.com/B-Rishitha15/portfolio-website")
+                        .build(),
+                Project.builder()
+                        .title("Customer Churn Prediction using ANN")
+                        .description("A deep learning web app that predicts whether a bank customer is likely "
+                                + "to leave. Enter details like age, geography, balance, number of products "
+                                + "and activity status, and the app returns the churn probability instantly.")
+                        .technologies("Python, TensorFlow, Artificial Neural Network (ANN), scikit-learn, Pandas, NumPy, Streamlit")
+                        .githubLink("https://github.com/B-Rishitha15/ANN-Churn-Prediction")
                         .build()
         );
 
