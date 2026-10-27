@@ -24,9 +24,9 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #030712; }
 .glass { background: rgba(255,255,255,.04); border: 1px solid rgba(255,255,255,.08);
   backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); }
 
-.reveal { opacity: 0; transform: translateY(32px);
-  transition: opacity .8s ease, transform .8s ease; }
-.reveal.visible { opacity: 1; transform: none; }
+.reveal { transition: opacity .8s ease, transform .8s ease; }
+.reveal-ready .reveal { opacity: 0; transform: translateY(32px); }
+.reveal-ready .reveal.visible { opacity: 1; transform: none; }
 
 .tilt { transition: transform .15s ease-out, border-color .3s, box-shadow .3s; will-change: transform; }
 .tilt:hover { border-color: rgba(129,140,248,.5); box-shadow: 0 20px 50px -20px rgba(99,102,241,.45); }
@@ -47,5 +47,5 @@ body { font-family: 'Inter', system-ui, sans-serif; background: #030712; }
 
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { animation: none !important; transition: none !important; }
-  .reveal { opacity: 1; transform: none; }
+ .reveal-ready .reveal { opacity: 1; transform: none; }
 }

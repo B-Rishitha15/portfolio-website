@@ -105,6 +105,7 @@ document.addEventListener('DOMContentLoaded', function () {
   document.querySelectorAll('.reveal').forEach(function (el, idx) {
     if (!el.getAttribute('data-delay')) el.setAttribute('data-delay', (idx % 4) * 90);
     revealObserver.observe(el);
+  document.documentElement.classList.add('reveal-ready');
   });
 
   // ---------- Animated counters ----------
