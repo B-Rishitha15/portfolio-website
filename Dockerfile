@@ -20,6 +20,9 @@ RUN keytool -list -cacerts -storepass changeit \
         keytool -delete -cacerts -storepass changeit -alias "$alias"; \
       done
 
+# Verification: prints how many of these certificates are still in the trust store (expected: 0)
+RUN echo "Remaining eMudhra/AAA roots: $(keytool -list -v -cacerts -storepass changeit | grep -ciE 'emSign|AAA Certificate Services')"
+
 RUN addgroup -S spring && adduser -S spring -G spring
 COPY --from=build /app/target/portfolio.jar app.jar
 USER spring
