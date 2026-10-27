@@ -9,6 +9,17 @@ RUN mvn -B -q clean package -DskipTests
 # ---------- Runtime stage ----------
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
+
+# Security: remove the compromised eMudhra (emSign) roots and the Sectigo AAA cross-signer
+# root from Java's trust store (eMudhra CA compromise, Oct 2026).
+RUN keytool -list -cacerts -storepass changeit \
+    | grep -iE '^(emsign|comodoaaa|aaacert|aaa certificate)' \
+    | cut -d, -f1 \
+    | while IFS= read -r alias; do \
+        echo "Removing trust anchor: $alias"; \
+        keytool -delete -cacerts -storepass changeit -alias "$alias"; \
+      done
+
 RUN addgroup -S spring && adduser -S spring -G spring
 COPY --from=build /app/target/portfolio.jar app.jar
 USER spring
