@@ -12,16 +12,17 @@ WORKDIR /app
 
 # Security: remove the compromised eMudhra (emSign) roots and the Sectigo AAA cross-signer
 # root from Java's trust store (eMudhra CA compromise, Oct 2026).
-RUN keytool -list -cacerts -storepass changeit \
-    | grep -iE '^(emsign|comodoaaa|aaacert|aaa certificate)' \
-    | cut -d, -f1 \
+# Aliases are found by certificate subject, so this works whatever the alias names are.
+RUN keytool -list -v -cacerts -storepass changeit \
+    | awk '/^Alias name:/ {sub(/^Alias name: /, ""); a=$0} /^Owner:/ && /emSign|AAA Certificate Services/ {print a}' \
+    | sort -u \
     | while IFS= read -r alias; do \
         echo "Removing trust anchor: $alias"; \
         keytool -delete -cacerts -storepass changeit -alias "$alias"; \
       done
 
-# Verification: prints how many of these certificates are still in the trust store (expected: 0)
-RUN echo "Remaining eMudhra/AAA roots: $(keytool -list -v -cacerts -storepass changeit | grep -ciE 'emSign|AAA Certificate Services')"
+# Verification: number of eMudhra/AAA certificates still trusted (expected: 0)
+RUN echo "REMAINING_ROOTS=$(keytool -list -v -cacerts -storepass changeit | grep '^Owner:' | grep -ciE 'emSign|AAA Certificate Services')"
 
 RUN addgroup -S spring && adduser -S spring -G spring
 COPY --from=build /app/target/portfolio.jar app.jar
